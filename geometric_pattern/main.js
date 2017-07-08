@@ -43,8 +43,8 @@ function draw() {
         y = y - circleRadius;
         isShifted = !isShifted;
         
-        rVal = rVal + 254 % 256;
-        gVal = gVal + 7 % 256;
-        bVal = bVal + 3 % 256;
+        rVal = (rVal + 254) % 256;
+        gVal = (gVal + 7) % 256;
+        bVal = (bVal + 3) % 256;
     }
 }
