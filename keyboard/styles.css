@@ -6,5 +6,6 @@ button:active {
     transform: scale(.9)
 }
 table {
+    width: 100%;
     text-align: center;
 }
