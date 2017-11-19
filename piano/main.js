@@ -64,3 +64,48 @@ $("#aKey").on("click", playA);
 $("#bFKey").on("click", playBF);
 $("#bKey").on("click", playB);
 $("#c2Key").on("click", playC2);
+
+$(document).keypress(delegateKeypress);
+
+function delegateKeypress(event) {
+    console.log(event.keyCode);
+    if (event.keyCode == 97) {
+        $("#cKey").trigger("click");
+    }
+    if (event.keyCode == 119) {
+        $("#cSKey").trigger("click");
+    }
+    if (event.keyCode == 115) {
+        $("#dKey").trigger("click");
+    }
+    if (event.keyCode == 101) {
+        $("#eFKey").trigger("click");
+    }
+    if (event.keyCode == 100) {
+        $("#eKey").trigger("click");
+    }
+    if (event.keyCode == 102) {
+        $("#fKey").trigger("click");
+    }
+    if (event.keyCode == 116) {
+        $("#fSKey").trigger("click");
+    }
+    if (event.keyCode == 106) {
+        $("#gKey").trigger("click");
+    }
+    if (event.keyCode == 105) {
+        $("#aFKey").trigger("click");
+    }
+    if (event.keyCode == 107) {
+        $("#aKey").trigger("click");
+    }
+    if (event.keyCode == 111) {
+        $("#bFKey").trigger("click");
+    }
+    if (event.keyCode == 108) {
+        $("#bKey").trigger("click");
+    }
+    if (event.keyCode == 59) {
+        $("#c2Key").trigger("click");
+    }
+}
