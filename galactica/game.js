@@ -5,7 +5,6 @@ var laserImage;
 var enemy1, enemy2, enemy3, enemy4;
 var enemyImage1, enemyImage2, enemyImage3, enemyImage4;
 var backgroundImage;
-var score;
 var loseSound = new Audio("media/sfx_lose.ogg");
 var laserSound = new Audio("media/sfx_laser1.ogg");
 var explosionSound = new Audio("media/explosion.wav");
@@ -47,8 +46,12 @@ function setup() {
     isEnemy2Drawn = false;
     isEnemy3Drawn = false;
     isEnemy4Drawn = false;
+    isLevelCleared = false;
     score = 0;
-    
+    level = 1;
+    enemiesPassed = 0;
+    MAXENEMIES = 25;
+    enemySpeed = 3;
 }
 function draw() {
     background(backgroundImage);
@@ -58,43 +61,55 @@ function draw() {
     
     if(isGameOver) {
         gameOver();
-    } else {
+    } 
+    if(isLevelCleared) {
+        levelCleared();
+    }
+    if ((!isGameOver) && (!isLevelCleared)) {
         // check for collision with enemy - game over
         if(enemy1.overlap(player) || enemy2.overlap(player) || enemy3.overlap(player) || enemy4.overlap(player)) {
             isGameOver = true;
             loseSound.play();
         }
+        // check for level cleared
+        if(enemiesPassed > level * MAXENEMIES) {
+            isLevelCleared = true;
+        }
         // check for hit on enemy - explosion
-        if(enemy1.overlap(laser)) {
+        if(enemy1.overlap(laser) && isLaserFired) {
             explosionSound.play();
             score += 100;
+            enemiesPassed += 1;
             enemy1.position.y = 0;
             enemy1.position.x = random(5,width-5);
             laser.visible = false;
             laser.position.y = height - (playerImage.height + laserImage.height/2);
             isLaserFired = false;
         }
-        if(enemy2.overlap(laser)) {
+        if(enemy2.overlap(laser) && isLaserFired) {
             explosionSound.play();
             score += 100;
+            enemiesPassed += 1;
             enemy2.position.y = 0;
             enemy2.position.x = random(5,width-5);
             laser.visible = false;
             laser.position.y = height - (playerImage.height + laserImage.height/2);
             isLaserFired = false;
         }
-        if(enemy3.overlap(laser)) {
+        if(enemy3.overlap(laser) && isLaserFired) {
             explosionSound.play();
             score += 100;
+            enemiesPassed += 1;
             enemy3.position.y = 0;
             enemy3.position.x = random(5,width-5);
             laser.visible = false;
             laser.position.y = height - (playerImage.height + laserImage.height/2);
             isLaserFired = false;
         }
-        if(enemy4.overlap(laser)) {
+        if(enemy4.overlap(laser) && isLaserFired) {
             explosionSound.play();
             score += 100;
+            enemiesPassed += 1;
             enemy4.position.y = 0;
             enemy4.position.x = random(5,width-5);
             laser.visible = false;
@@ -118,7 +133,7 @@ function draw() {
         
         //advance laser position
         if (isLaserFired) {
-            laser.position.y -= 6;
+            laser.position.y -= (enemySpeed*2);
             if (laser.position.y < 1) {
                 laser.visible = false;
                 laser.position.y = height - (playerImage.height + laserImage.height/2);
@@ -127,18 +142,20 @@ function draw() {
         }
         
         //advance enemy positions
-        enemy1.position.y += 3;
-        if (enemy1.position.y>height) {
+        enemy1.position.y += enemySpeed;
+        if ((enemy1.position.y>height) && !(enemiesPassed > level * MAXENEMIES)) {
             enemy1.position.y = 0;
             enemy1.position.x = random(5, width-5);
             score += 10;
+            enemiesPassed += 1;
         }
         if (isEnemy2Drawn) {
-            enemy2.position.y += 3;
-            if (enemy2.position.y > height) {
+            enemy2.position.y += enemySpeed;
+            if ((enemy2.position.y > height) && !(enemiesPassed > level * MAXENEMIES)) {
                 enemy2.position.y = 0;
                 enemy2.position.x = random(5,width-5);
                 score += 10;
+                enemiesPassed += 1;
             }
         } else {
             if (enemy1.position.y > height/4) {
@@ -147,11 +164,12 @@ function draw() {
             }
         }
         if (isEnemy3Drawn) {
-            enemy3.position.y += 3;
-            if (enemy3.position.y > height) {
+            enemy3.position.y += enemySpeed;
+            if ((enemy3.position.y > height) && !(enemiesPassed > level * MAXENEMIES)) {
                 enemy3.position.y = 0;
                 enemy3.position.x = random(5,width-5);
                 score += 10;
+                enemiesPassed += 1;
             }
         } else {
             if (enemy1.position.y > height/2) {
@@ -160,11 +178,12 @@ function draw() {
             }
         }
         if (isEnemy4Drawn) {
-            enemy4.position.y += 3;
-            if (enemy4.position.y > height) {
+            enemy4.position.y += enemySpeed;
+            if ((enemy4.position.y > height) && !(enemiesPassed > level * MAXENEMIES)) {
                 enemy4.position.y = 0;
                 enemy4.position.x = random(5,width-5);
                 score += 10;
+                enemiesPassed += 1;
             }
         } else {
             if (enemy1.position.y > 3*height/4) {
@@ -182,9 +201,45 @@ function gameOver() {
   text("Final Score  " + nfs(score,5,0),width/2, height/2+40);
   text("Click anywhere to try again", width/2, 5*height/8);
 }
+function levelCleared() {
+  background(0);
+  textAlign(CENTER);
+  text("Level " + nfs(level,1,0) + " Cleared!", width/2, height/2);
+  text("Score  " + nfs(score,5,0),width/2, height/2+40);
+  text("Click anywhere to continue", width/2, 5*height/8);
+}
 function mouseClicked() {
     if(isGameOver) {
         isGameOver = false;
+        player.position.x = width/2;
+        player.position.y = height-(playerImage.height/2);
+        laser.visible = false;
+        laser.position.y = height - (playerImage.height + laserImage.height/2);
+        isLaserFired = false;
+        enemy1.position.x = width/2;
+        enemy1.position.y = 0; 
+        enemy2.position.x = width/4;
+        enemy2.position.y = 0;
+        enemy2.visible = false;
+        enemy3.position.x = 3*width/4;
+        enemy3.position.y = 0;
+        enemy3.visible = false;
+        enemy4.position.x = width/3;
+        enemy4.position.y = 0;
+        enemy4.visible = false;
+        isEnemy2Drawn = false;
+        enemy3.visible = false;
+        isEnemy3Drawn = false;
+        enemy4.visible = false;
+        isEnemy4Drawn = false;
+        enemiesPassed = 0;
+        enemySpeed = 3;
+        score = 0;
+        level = 1;
+    }
+    if(isLevelCleared) {
+        isLevelCleared = false;
+        enemiesPassed = 0;
         player.position.x = width/2;
         player.position.y = height-(playerImage.height/2);
         enemy1.position.x = width/2;
@@ -203,7 +258,7 @@ function mouseClicked() {
         isEnemy3Drawn = false;
         enemy4.visible = false;
         isEnemy4Drawn = false;
-        score = 0;
+        enemySpeed += 1;
+        level += 1;        
     }
-
 }
