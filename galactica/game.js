@@ -88,7 +88,7 @@ function draw() {
         }
         if(enemy2.overlap(laser) && isLaserFired) {
             explosionSound.play();
-            score += 100;
+            score += 50;
             enemiesPassed += 1;
             enemy2.position.y = 0;
             enemy2.position.x = random(5,width-5);
@@ -108,7 +108,7 @@ function draw() {
         }
         if(enemy4.overlap(laser) && isLaserFired) {
             explosionSound.play();
-            score += 100;
+            score += 50;
             enemiesPassed += 1;
             enemy4.position.y = 0;
             enemy4.position.x = random(5,width-5);
@@ -242,6 +242,9 @@ function mouseClicked() {
         enemiesPassed = 0;
         player.position.x = width/2;
         player.position.y = height-(playerImage.height/2);
+        laser.visible = false;
+        laser.position.y = height - (playerImage.height + laserImage.height/2);
+        isLaserFired = false;
         enemy1.position.x = width/2;
         enemy1.position.y = 0; 
         enemy2.position.x = width/4;
