@@ -42,6 +42,7 @@ function setup() {
     enemy4.rotationSpeed = 8.0;
     enemy4.visible = false;
     isGameOver = false;
+    isGamePaused = false;
     isLaserFired = false;
     isEnemy2Drawn = false;
     isEnemy3Drawn = false;
@@ -62,10 +63,13 @@ function draw() {
     if(isGameOver) {
         gameOver();
     } 
+    if(isGamePaused) {
+        gamePaused();
+    }
     if(isLevelCleared) {
         levelCleared();
     }
-    if ((!isGameOver) && (!isLevelCleared)) {
+    if ((!isGameOver) && (!isLevelCleared) && (!isGamePaused)) {
         // check for collision with enemy - game over
         if(enemy1.overlap(player) || enemy2.overlap(player) || enemy3.overlap(player) || enemy4.overlap(player)) {
             isGameOver = true;
@@ -129,6 +133,9 @@ function draw() {
             isLaserFired = true;
             laser.position.x = player.position.x;
             laser.visible = true;
+        }
+        if(keyDown(80)){
+            isGamePaused = true;
         }
         
         //advance laser position
@@ -208,6 +215,13 @@ function levelCleared() {
   text("Score  " + nfs(score,5,0),width/2, height/2+40);
   text("Click anywhere to continue", width/2, 5*height/8);
 }
+function gamePaused() {
+  background(0);
+  textAlign(CENTER);
+  text("Game Paused", width/2, height/2);
+  text("Score  " + nfs(score,5,0),width/2, height/2+40);
+  text("Click anywhere to continue", width/2, 5*height/8);
+}
 function mouseClicked() {
     if(isGameOver) {
         isGameOver = false;
@@ -263,5 +277,8 @@ function mouseClicked() {
         isEnemy4Drawn = false;
         enemySpeed += 1;
         level += 1;        
+    }
+    if(isGamePaused) {
+        isGamePaused = false;
     }
 }
