@@ -8,6 +8,7 @@ var backgroundImage;
 var loseSound = new Audio("media/sfx_lose.ogg");
 var laserSound = new Audio("media/sfx_laser1.ogg");
 var explosionSound = new Audio("media/explosion.wav");
+var today = new Date();
 
 function preload() {
     playerImage = loadImage("media/playerShip2_blue.png");
@@ -48,6 +49,7 @@ function setup() {
     isEnemy3Drawn = false;
     isEnemy4Drawn = false;
     isLevelCleared = false;
+    isHackClubTime = false;
     score = 0;
     level = 1;
     enemiesPassed = 0;
@@ -60,6 +62,10 @@ function draw() {
     textSize(18);
     text(nfs(score,6,0),width-100,20);
     
+    if(today.getDay = 2){
+        isHackClubTime = true;
+        hackClubTime();
+    }
     if(isGameOver) {
         gameOver();
     } 
@@ -69,7 +75,7 @@ function draw() {
     if(isLevelCleared) {
         levelCleared();
     }
-    if ((!isGameOver) && (!isLevelCleared) && (!isGamePaused)) {
+    if ((!isGameOver) && (!isLevelCleared) && (!isGamePaused) && (!isHackClubTime)) {
         // check for collision with enemy - game over
         if(enemy1.overlap(player) || enemy2.overlap(player) || enemy3.overlap(player) || enemy4.overlap(player)) {
             isGameOver = true;
@@ -207,6 +213,11 @@ function gameOver() {
   text("Game Over!", width/2, height/2);
   text("Final Score  " + nfs(score,5,0),width/2, height/2+40);
   text("Click anywhere to try again", width/2, 5*height/8);
+}
+function hackClubTime() {
+  background(0);
+  textAlign(CENTER);
+  text("It's Tuesday - Shouldn't you be writing your own game now?", width/2, height/2);
 }
 function levelCleared() {
   background(0);
