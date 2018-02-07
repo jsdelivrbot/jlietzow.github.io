@@ -62,7 +62,7 @@ function draw() {
     textSize(18);
     text(nfs(score,6,0),width-100,20);
     
-    if(today.getDay = 2){
+    if(today.getDay == 2){
         isHackClubTime = true;
         hackClubTime();
     }
