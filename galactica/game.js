@@ -9,6 +9,7 @@ var loseSound = new Audio("media/sfx_lose.ogg");
 var laserSound = new Audio("media/sfx_laser1.ogg");
 var explosionSound = new Audio("media/explosion.wav");
 var today = new Date();
+var day;
 
 function preload() {
     playerImage = loadImage("media/playerShip2_blue.png");
@@ -55,6 +56,7 @@ function setup() {
     enemiesPassed = 0;
     MAXENEMIES = 25;
     enemySpeed = 3;
+    day = today.getDay();
 }
 function draw() {
     background(backgroundImage);
@@ -62,7 +64,7 @@ function draw() {
     textSize(18);
     text(nfs(score,6,0),width-100,20);
     
-    if(today.getDay == 2){
+    if(day == 2){
         isHackClubTime = true;
         hackClubTime();
     }
