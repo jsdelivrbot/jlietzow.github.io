@@ -7,12 +7,15 @@ var GROUND_SPRITE_HEIGHT = 50;
 var numGroundSprites;
 var player;
 var isGameOver;
+var isAirborne;
 var score;
 
 function setup() {
     isGameOver = false;
+    isAirborne = false;
+    isJumping = false;
     score = 0;
-    createCanvas(400, 300);
+    createCanvas(500, 600);
     background(150, 200, 250);
     groundSprites = new Group();
     obstacleSprites = new Group();
@@ -37,9 +40,15 @@ function draw() {
         if (groundSprites.overlap(player)) {
             player.velocity.y = 0;
             player.position.y = (height-50) - (player.height/2);
+            isAirborne = false;
         }
-        if(keyDown(UP_ARROW) && player.position.y > player.height) {
+        if(keyDown(UP_ARROW) && player.position.y > player.height && (!isAirborne || isJumping)) {
             player.velocity.y = JUMP;
+            isJumping = true;
+            isAirborne = true;
+        }
+        else {
+            isJumping = false;
         }
         player.position.x = player.position.x + 5;
         camera.position.x = player.position.x + (width/4);
@@ -49,7 +58,7 @@ function draw() {
             firstGroundSprite.position.x = firstGroundSprite.position.x + numGroundSprites*firstGroundSprite.width;
             groundSprites.add(firstGroundSprite);
         }
-        if (random() > 0.97) {
+        if (random() > 0.98) {
             var obstacle = createSprite(camera.position.x + width, random(0, (height-50)-15), 30, 30);
             obstacleSprites.add(obstacle);
         }
@@ -80,5 +89,7 @@ function mouseClicked() {
         obstacleSprites.removeSprites();
         score = 0;
         isGameOver = false;
+        isJumping = false;
+        isAirborne = false;
     }
 }
