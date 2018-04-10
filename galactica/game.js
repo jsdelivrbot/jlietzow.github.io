@@ -64,10 +64,10 @@ function draw() {
     textSize(18);
     text(nfs(score,6,0),width-100,20);
     
-    if(day == 2){
-        isHackClubTime = true;
-        hackClubTime();
-    }
+//    if(day == 2){
+//        isHackClubTime = true;
+//        hackClubTime();
+//    }
     if(isGameOver) {
         gameOver();
     } 
