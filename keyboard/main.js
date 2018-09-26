@@ -68,7 +68,7 @@ $("#c2Button").on("click", playC2);
 $(document).keypress(delegateKeypress);
 
 function delegateKeypress(event) {
-    console.log(event.keyCode);
+    //console.log(event.keyCode);
     if (event.keyCode == 97) {
         $("#cButton").trigger("click");
     }
